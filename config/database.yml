@@ -1,0 +1,80 @@
+# Configuração padrão para todos os ambientes
+default: &default
+  # Define o adaptador de banco de dados como PostgreSQL
+  adapter: postgresql
+  # Define a codificação de caracteres como unicode
+  encoding: unicode
+  # Define o número máximo de conexões simultâneas no pool
+  # Usa a variável de ambiente RAILS_MAX_THREADS ou o valor padrão 5
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  # Configurações de conexão padrão
+  # Nome de usuário para conexão com o banco de dados
+  # Usa a variável de ambiente DB_USERNAME ou o valor padrão 'postgres'
+  username: <%= ENV.fetch("DB_USERNAME") { 'postgres' } %>
+  # Senha para conexão com o banco de dados
+  # Usa a variável de ambiente BLOG_AUTH_DATABASE_PASSWORD ou uma string vazia
+  password: <%= ENV.fetch("BLOG_AUTH_DATABASE_PASSWORD") { '' } %>
+  # Host onde o banco de dados está rodando
+  # Usa a variável de ambiente DB_HOST ou o valor padrão 'localhost'
+  host: <%= ENV.fetch("DB_HOST") { 'localhost' } %>
+
+# Ambiente de desenvolvimento
+development:
+  # Herda todas as configurações do bloco default
+  <<: *default
+  # Define o nome do banco de dados para o ambiente de desenvolvimento
+  database: blog_auth_development
+  # As configurações de username, password e host já são herdadas do default
+
+# Ambiente de teste
+test:
+  # Herda todas as configurações do bloco default
+  <<: *default
+  # Define o nome do banco de dados para o ambiente de teste
+  database: blog_auth_test
+  # As configurações de username, password e host já são herdadas do default
+
+# Ambiente de produção
+production:
+  # Configuração principal do banco de dados de produção
+  primary: &primary_production
+    # Herda todas as configurações do bloco default
+    <<: *default
+    # Define o nome do banco de dados para o ambiente de produção
+    database: blog_auth_production
+    # Estas linhas substituem as configurações herdadas do default
+    # Nome de usuário específico para produção
+    username: blog_auth
+    # Senha obtida da variável de ambiente BLOG_AUTH_DATABASE_PASSWORD
+    # Importante: Esta variável deve estar definida no ambiente de produção
+    password: <%= ENV["BLOG_AUTH_DATABASE_PASSWORD"] %>
+    # Adicionando o host para o ambiente de produção
+    # Usa a variável de ambiente DB_HOST
+    host: <%= ENV.fetch("DB_HOST") { 'localhost' } %>
+  
+  # Banco de dados para cache em produção
+  cache:
+    # Herda todas as configurações do bloco primary_production
+    <<: *primary_production
+    # Define o nome do banco de dados para cache em produção
+    database: blog_auth_production_cache
+    # Define o caminho para as migrações específicas do cache
+    migrations_paths: db/cache_migrate
+  
+  # Banco de dados para filas em produção
+  queue:
+    # Herda todas as configurações do bloco primary_production
+    <<: *primary_production
+    # Define o nome do banco de dados para filas em produção
+    database: blog_auth_production_queue
+    # Define o caminho para as migrações específicas das filas
+    migrations_paths: db/queue_migrate
+  
+  # Banco de dados para Action Cable em produção
+  cable:
+    # Herda todas as configurações do bloco primary_production
+    <<: *primary_production
+    # Define o nome do banco de dados para Action Cable em produção
+    database: blog_auth_production_cable
+    # Define o caminho para as migrações específicas do Action Cable
+    migrations_paths: db/cable_migrate
