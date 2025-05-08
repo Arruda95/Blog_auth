@@ -1,7 +1,9 @@
 class PostsController < ApplicationController
   # Define uma ação que será executada antes dos métodos show, edit, update e destroy
   # Isso carrega o post específico com base no ID fornecido na URL
-  before_action :set_post, only: %i[ show edit update destroy ]
+  before_action :require_login, except: [:index, :show]
+  before_action :set_post, only: [:show, :edit, :update, :destroy]
+
 
   # GET /posts ou /posts.json
   # Método para listar todos os posts do blog
@@ -29,6 +31,7 @@ class PostsController < ApplicationController
   # GET /posts/1/edit
   # Método para exibir o formulário de edição de um post existente
   def edit
+    authorize @post
     # O post já foi carregado pelo before_action :set_post
     # Não é necessário código adicional aqui, pois a view edit.html.erb
     # terá acesso à variável @post definida pelo método set_post
@@ -62,6 +65,7 @@ class PostsController < ApplicationController
   # PATCH/PUT /posts/1 ou /posts/1.json
   # Método para processar o formulário de atualização de post
   def update
+    authorize @post
     # Responde de acordo com o formato solicitado (HTML ou JSON)
     respond_to do |format|
       # Tenta atualizar o post com os parâmetros recebidos do formulário
@@ -84,6 +88,7 @@ class PostsController < ApplicationController
   # DELETE /posts/1 ou /posts/1.json
   # Método para excluir um post existente
   def destroy
+    authorize @post
     # Exclui o post do banco de dados usando destroy! que lança exceção em caso de erro
     # O post já foi carregado pelo before_action :set_post
     @post.destroy!

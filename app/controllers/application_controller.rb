@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  include Pundit
   # Define o método current_user como um helper method
   # Isso permite que o método seja acessível nas views, além dos controllers
   helper_method :current_user
