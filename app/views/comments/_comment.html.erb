@@ -1,0 +1,6 @@
+<div id="comment_<%= comment.id %>">
+  <p><strong><%= comment.user.name %></strong> <%= comment.created_at.strftime("%d/%m/%Y %H:%M") %></p>
+  <p><%= comment.content %></p>
+
+  <%= link_to "Excluir", post_comment_path(@post, comment), method: :delete, data: { turbo_confirm: "Tem certeza?" } %>
+</div>

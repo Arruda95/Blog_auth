@@ -1,0 +1,5 @@
+<h3>Comentários</h3>
+<div id="comments_list">
+  <%= render @post.comments %> <!-- Renderiza o partial _comment para cada comentário -->
+</div>
+<%= render 'comments/form' %> <!-- Formulário para adicionar um novo comentário -->

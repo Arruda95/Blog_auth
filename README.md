@@ -22,7 +22,7 @@ Blog Auth é uma aplicação web de blog com sistema de autenticação integrado
 O Blog Auth segue a arquitetura MVC (Model-View-Controller) do Rails:
 
 * **Models** - Representam os dados e a lógica de negócios (User, Post, Comment)
-* **Views** - Interface com o usuário, renderizando HTML
+* **Views** - Interface com o usuário, renderizando HTML com Tailwind CSS
 * **Controllers** - Coordenam a interação entre models e views
 
 ## Estrutura do Projeto
@@ -141,10 +141,24 @@ bin/docker-entrypoint
 
 ### Interface
 
-* Design responsivo para dispositivos móveis e desktop
+* Design responsivo para dispositivos móveis e desktop com Tailwind CSS
 * Tema claro/escuro
 * Acessibilidade (WCAG 2.1)
 * Internacionalização (i18n)
+
+## Gems Utilizadas
+
+* **Rails 8.0.2** - Framework web
+* **PostgreSQL** - Banco de dados relacional
+* **Tailwind CSS** - Framework CSS para design moderno e responsivo
+* **Pundit** - Autorização de usuários
+* **Friendly ID** - URLs amigáveis para posts
+* **BCrypt** - Criptografia de senhas
+* **Kaminari** - Paginação
+* **Hotwire/Turbo** - Atualizações dinâmicas da interface
+* **Active Storage** - Upload e processamento de imagens
+* **RSpec** - Testes automatizados
+* **Factory Bot** - Factories para testes
 
 ## Testes
 

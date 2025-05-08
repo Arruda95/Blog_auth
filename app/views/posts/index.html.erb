@@ -1,18 +1,28 @@
-<%= paginate @posts %>
-<p style="color: green"><%= notice %></p>
-
-
 <% content_for :title, "Posts" %>
 
-<h1>Posts</h1>
-
-<div id="posts">
-  <% @posts.each do |post| %>
-    <%= render post %>
-    <p>
-      <%= link_to "Show this post", post %>
-    </p>
-  <% end %>
+<div class="bg-white shadow overflow-hidden sm:rounded-lg">
+  <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-gray-900">Posts</h1>
+    <% if current_user %>
+      <%= link_to "Novo post", new_post_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+    <% end %>
+  </div>
+  
+  <div class="border-t border-gray-200">
+    <div id="posts" class="divide-y divide-gray-200">
+      <% @posts.each do |post| %>
+        <div class="p-6 hover:bg-gray-50">
+          <h2 class="text-xl font-semibold text-gray-800 mb-2"><%= post.title %></h2>
+          <p class="text-sm text-gray-500 mb-2">Publicado por <%= post.user.email %> em <%= l post.created_at, format: :short %></p>
+          <div class="mt-4">
+            <%= link_to "Ver post completo", post, class: "text-indigo-600 hover:text-indigo-900" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
 </div>
 
-<%= link_to "New post", new_post_path %>
+<div class="mt-4">
+  <%= paginate @posts, class: "pagination" %>
+</div>

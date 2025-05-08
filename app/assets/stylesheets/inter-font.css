@@ -1,0 +1,109 @@
+
+
+/* Importação da fonte via Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/* 
+ * Definindo variáveis CSS para uso em toda a aplicação
+ * Estas variáveis podem ser acessadas mesmo fora do contexto do TailwindCSS
+ */
+:root {
+  --font-family-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-family-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* 
+ * Aplicando a fonte Inter como padrão para elementos HTML básicos
+ * Isso garante que a fonte seja usada mesmo sem classes do Tailwind
+ */
+html {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/*
+ * Estilos específicos para variantes de peso da fonte
+ * Tailwind usará automaticamente estes pesos quando estiverem disponíveis
+ */
+.font-thin {
+  font-weight: 100;
+}
+
+.font-extralight {
+  font-weight: 200;
+}
+
+.font-light {
+  font-weight: 300;
+}
+
+.font-normal {
+  font-weight: 400;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-extrabold {
+  font-weight: 800;
+}
+
+.font-black {
+  font-weight: 900;
+}
+
+/* 
+ * Classes utilitárias adicionais para recursos específicos da fonte Inter
+ * Estas classes não fazem parte do Tailwind por padrão
+ */
+.inter-feature-cv01 {
+  font-feature-settings: "cv01";  /* Open Zero */
+}
+
+.inter-feature-cv02 {
+  font-feature-settings: "cv02";  /* Open Four */
+}
+
+.inter-feature-cv03 {
+  font-feature-settings: "cv03";  /* Open Six */
+}
+
+.inter-feature-cv04 {
+  font-feature-settings: "cv04";  /* Open Nine */
+}
+
+.inter-feature-cv05 {
+  font-feature-settings: "cv05";  /* Alternate One */
+}
+
+.inter-feature-cv06 {
+  font-feature-settings: "cv06";  /* Alternate Lower-case L */
+}
+
+.inter-feature-cv07 {
+  font-feature-settings: "cv07";  /* Alternate Upper-case I */
+}
+
+.inter-feature-cv08 {
+  font-feature-settings: "cv08";  /* Alternate Upper-case J */
+}
+
+/* Definições para texto com kerning ajustado */
+.inter-kerned {
+  font-kerning: normal;
+  font-feature-settings: "kern";
+}
+
+/* Definições para texto com ajuste de ligaduras */
+.inter-ligatures {
+  font-variant-ligatures: common-ligatures contextual;
+  font-feature-settings: "liga", "clig", "calt";
+}

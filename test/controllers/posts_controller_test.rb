@@ -3,6 +3,9 @@ require "test_helper"
 class PostsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @post = posts(:one)
+    @user = users(:one)
+    # Simula login do usuário para os testes
+    post login_path, params: { email: @user.email, password: 'password' }
   end
 
   test "should get index" do
@@ -17,7 +20,7 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create post" do
     assert_difference("Post.count") do
-      post posts_url, params: { post: { content: @post.content, title: @post.title, user_id: @post.user_id } }
+      post posts_url, params: { post: { content: @post.content, title: @post.title } }
     end
 
     assert_redirected_to post_url(Post.last)
