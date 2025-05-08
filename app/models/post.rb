@@ -1,28 +1,22 @@
-class PostsController < ApplicationController
-  before_action :require_login, except: [:index, :show]
-
-  def create
-    @post = current_user.posts.build(post_params)
-    if @post.save
-      redirect_to @post, notice: "Post criado com sucesso!"
-    else
-      render :new, status: :unprocessable_entity
-      validates :title, :content, presence: true
-    end
-  end
-  def destroy
-    @post = current_user.posts.find(params[:id])
-    @post.destroy
-    redirect_to posts_path, notice: "Post excluído com sucesso!"
-  private
-
-  def post_params
-    params.require(:post).permit(:title, :content)
-  end
-
-  def require_login
-    unless current_user
-      redirect_to login_path, alert: "Você precisa estar logado para acessar esta página."
-    end
+class Post < ApplicationRecord
+  # Define relacionamento com o usuário (cada post pertence a um usuário)
+  belongs_to :user
+  
+  # Define relacionamento de um-para-muitos com comentários (um post pode ter vários comentários)
+  has_many :comments, dependent: :destroy
+  
+  # Validações para os campos do post:
+  # - title: não pode ser vazio
+  # - content: não pode ser vazio
+  validates :title, :content, presence: true
+  
+  # Define a ordenação padrão dos posts (do mais recente para o mais antigo)
+  default_scope { order(created_at: :desc) }
+  
+  # Método para verificar se um usuário específico é o autor do post
+  # @param [User] user - O usuário a ser verificado
+  # @return [Boolean] - Verdadeiro se o usuário for o autor, falso caso contrário
+  def authored_by?(user)
+    user_id == user&.id
   end
 end

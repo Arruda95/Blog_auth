@@ -1,10 +1,21 @@
-<p style="color: green"><%= notice %></p>
+<h2>Comentários</h2>
+<% @post.comments.each do |comment| %>
+  <p><strong><%= comment.user.email %>:</strong> <%= comment.content %></p>
+  <% if comment.user == current_user %>
+    <%= link_to 'Excluir', [comment.post, comment], method: :delete, data: { confirm: 'Tem certeza?' } %>
+  <% end %>
+<% end %>
 
-<%= render @post %>
-
-<div>
-  <%= link_to "Edit this post", edit_post_path(@post) %> |
-  <%= link_to "Back to posts", posts_path %>
-
-  <%= button_to "Destroy this post", @post, method: :delete %>
-</div>
+<% if current_user %>
+  <%= form_with(model: [@post, Comment.new]) do |form| %>
+    <div>
+      <%= form.label :content, "Novo Comentário" %><br>
+      <%= form.text_area :content %>
+    </div>
+    <div>
+      <%= form.submit "Comentar" %>
+    </div>
+  <% end %>
+<% else %>
+  <p><%= link_to "Faça login", login_path %> para comentar.</p>
+<% end %>
