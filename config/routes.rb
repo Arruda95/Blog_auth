@@ -1,9 +1,4 @@
 Rails.application.routes.draw do
-  get "sessions/new"
-  get "sessions/create"
-  get "sessions/destroy"
-  get "users/new"
-  get "users/create"
   root "posts#index"
 
   get 'signup', to: 'users#new'
@@ -11,8 +6,10 @@ Rails.application.routes.draw do
 
   get 'login', to: 'sessions#new'
   post 'login', to: 'sessions#create'
+  get 'logout', to: 'sessions#destroy'
   delete 'logout', to: 'sessions#destroy'
 
   resources :posts do
     resources :comments, only: [:create, :destroy]
+  end 
 end

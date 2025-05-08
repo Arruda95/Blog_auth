@@ -10,12 +10,14 @@ class PostsController < ApplicationController
   def index
     # Busca todos os posts do banco de dados e armazena na variável @posts
     # Esta variável estará disponível na view correspondente (index.html.erb)
-    @posts = Post.all
+    @posts = Post.page(params[:page]).per(5) # O .per(5) define quantos posts por página
   end
 
   # GET /posts/1 ou /posts/1.json
   # Método para exibir um post específico
   def show
+    @post = Post.find(params[:id])
+    @comments = @post.comments.page(params[:page]).per(5)
     # O post já foi carregado pelo before_action :set_post
     # Não é necessário código adicional aqui, pois a view show.html.erb
     # terá acesso à variável @post definida pelo método set_post
@@ -110,7 +112,7 @@ class PostsController < ApplicationController
     def set_post
       # Busca o post pelo ID fornecido na URL e armazena na variável @post
       # params.expect(:id) garante que o parâmetro id esteja presente, lançando exceção caso contrário
-      @post = Post.find(params.expect(:id))
+      @post = Post.friendly.find(params[:id])
     end
 
     # Método privado para filtrar os parâmetros permitidos do formulário

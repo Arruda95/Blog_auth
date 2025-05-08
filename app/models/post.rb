@@ -1,10 +1,14 @@
 class Post < ApplicationRecord
+  extend FriendlyId
+  friendly_id :title, use: :slugged
+
   # Define relacionamento com o usuário (cada post pertence a um usuário)
   belongs_to :user
   
   # Define relacionamento de um-para-muitos com comentários (um post pode ter vários comentários)
   has_many :comments, dependent: :destroy
-  
+  has_rich_text :content
+  has_one_attached :image
   # Validações para os campos do post:
   # - title: não pode ser vazio
   # - content: não pode ser vazio

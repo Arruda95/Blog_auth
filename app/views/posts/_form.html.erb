@@ -1,32 +1,31 @@
-<%= form_with(model: post) do |form| %>
+<%= form_with(model: post, local: true, html: { multipart: true }) do |form| %>
   <% if post.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
-
-      <ul>
-        <% post.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+    <div class="bg-red-100 border border-red-400 text-red-700 p-4 rounded mb-4">
+      <h2 class="font-bold"><%= pluralize(post.errors.count, "erro") %> impediram o post de ser salvo:</h2>
+      <ul class="list-disc list-inside">
+        <% post.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :title, style: "display: block" %>
-    <%= form.text_field :title %>
+  <div class="mb-4">
+    <%= form.label :title, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_field :title, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :content, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.rich_text_area :content, class: "mt-1" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :image, "Imagem de Capa", class: "block text-sm font-medium text-gray-700" %>
+    <%= form.file_field :image, class: "mt-1 block" %>
   </div>
 
   <div>
-    <%= form.label :content, style: "display: block" %>
-    <%= form.textarea :content %>
-  </div>
-
-  <div>
-    <%= form.label :user_id, style: "display: block" %>
-    <%= form.text_field :user_id %>
-  </div>
-
-  <div>
-    <%= form.submit %>
+    <%= form.submit "Salvar Post", class: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" %>
   </div>
 <% end %>

@@ -4,14 +4,15 @@
   <title>BlogAuth</title>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
+  <%= javascript_importmap_tags %>
 </head>
 <body>
   <nav>
     <% if current_user %>
       <span>Bem-vindo, <%= current_user.email %></span>
       <%= link_to "Novo Post", new_post_path %>
-      <%= link_to "Logout", logout_path, method: :delete %>
-    <% else %>
+      <%= link_to "Logout", logout_path, method: :delete, data: { confirm: "Deseja sair?" } %>
+      <% else %>
       <%= link_to "Login", login_path %>
       <%= link_to "Cadastro", signup_path %>
     <% end %>

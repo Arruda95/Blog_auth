@@ -1,3 +1,10 @@
+<%= paginate @comments %>
+<h1><%= @post.title %></h1>
+<%= render 'comments/comments', post: @post %> <!-- Renderiza a lista de comentários -->
+<div class="trix-content">
+  <%= @post.content %>
+</div>
+
 <h2>Comentários</h2>
 <% @post.comments.each do |comment| %>
   <p><strong><%= comment.user.email %>:</strong> <%= comment.content %></p>
@@ -18,4 +25,15 @@
   <% end %>
 <% else %>
   <p><%= link_to "Faça login", login_path %> para comentar.</p>
+  
+  <% if @post.image.attached? %>
+  <div class="mb-4">
+    <%= image_tag @post.image.variant(resize_to_limit: [800, 400]) %>
+  </div>
+<% end %>
+
+<h1><%= @post.title %></h1>
+<div>
+  <%= @post.content %>
+</div>
 <% end %>

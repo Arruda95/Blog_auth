@@ -43,7 +43,7 @@ class SessionsController < ApplicationController
     # Remove o ID do usuário da sessão, efetivamente deslogando o usuário
     # O método delete remove a chave :user_id da hash de sessão
     # Isso faz com que current_user retorne nil nas próximas requisições
-    session.delete(:user_id)
+    session[:user_id] = nil
     
     # Redireciona para a página inicial com mensagem de sucesso
     # A mensagem é armazenada no flash[:notice] e será exibida na próxima requisição
