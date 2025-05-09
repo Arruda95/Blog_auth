@@ -1,16 +1,22 @@
 <% content_for :title, "Editando post" %>
 
-<div class="bg-white shadow overflow-hidden sm:rounded-lg">
-  <div class="px-4 py-5 sm:px-6">
-    <h1 class="text-2xl font-bold text-gray-900">Editando post</h1>
+<div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100 max-w-4xl mx-auto">
+  <div class="px-6 py-6 bg-gradient-to-r from-blue-500 to-indigo-600">
+    <h1 class="text-2xl font-bold text-white">Editando post</h1>
   </div>
   
-  <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+  <div class="px-6 py-6">
     <%= render "form", post: @post %>
   </div>
   
-  <div class="border-t border-gray-200 px-4 py-4 sm:px-6 flex space-x-4">
-    <%= link_to "Ver post", @post, class: "text-indigo-600 hover:text-indigo-900" %>
-    <%= link_to "Voltar para posts", posts_path, class: "text-indigo-600 hover:text-indigo-900" %>
+  <div class="border-t border-gray-200 px-6 py-4 flex space-x-4 bg-gray-50">
+    <%= link_to @post, class: "flex items-center text-blue-600 hover:text-blue-800 font-medium" do %>
+      <span class="material-icons text-sm mr-1">visibility</span>
+      <span>Ver post</span>
+    <% end %>
+    <%= link_to posts_path, class: "flex items-center text-blue-600 hover:text-blue-800 font-medium" do %>
+      <span class="material-icons text-sm mr-1">arrow_back</span>
+      <span>Voltar para posts</span>
+    <% end %>
   </div>
 </div>

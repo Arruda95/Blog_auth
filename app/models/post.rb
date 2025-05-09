@@ -9,10 +9,31 @@ class Post < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_rich_text :content
   has_one_attached :image
-  # Validações para os campos do post:
-  # - title: não pode ser vazio
-  # - content: não pode ser vazio
-  validates :title, :content, presence: true
+  
+  # Validações rigorosas para os campos do post:
+  validates :title, presence: true, length: { minimum: 3, maximum: 100 }
+  validates :content, presence: true
+  validates :slug, uniqueness: true
+  
+  # Validação para imagens anexadas
+  validate :acceptable_image, if: -> { image.attached? }
+  
+  private
+  
+  # Método para validar se a imagem anexada é aceitável
+  # Verifica o tipo de arquivo e o tamanho da imagem
+  def acceptable_image
+    # Verifica se o tipo de arquivo é uma imagem
+    unless image.blob.content_type.start_with?('image/')
+      errors.add(:image, 'deve ser uma imagem')
+      return
+    end
+    
+    # Verifica o tamanho da imagem (máximo de 5MB)
+    if image.blob.byte_size > 5.megabytes
+      errors.add(:image, 'é muito grande (máximo de 5MB)')
+    end
+  end
   
   # Define a ordenação padrão dos posts (do mais recente para o mais antigo)
   default_scope { order(created_at: :desc) }

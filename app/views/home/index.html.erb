@@ -1,0 +1,91 @@
+<% content_for :title, "Home" %>
+
+<div class="container mx-auto px-4 py-8"> <!-- Container principal com espaçamento responsivo -->
+  <div class="mb-12 text-center">
+    <h2 class="text-3xl font-bold uppercase mb-2">BEM-VINDO AO NOSSO BLOG</h2> <!-- Título principal da página -->
+    <div class="w-24 h-1 bg-gray-800 mx-auto mb-4"></div> <!-- Linha decorativa -->
+    <p class="text-gray-600 max-w-2xl mx-auto">Descubra artigos interessantes, dicas e histórias inspiradoras em nosso blog.</p> <!-- Descrição do blog -->
+  </div>
+  
+  <!-- Carrossel de comentários recentes -->
+  <div class="mb-12 overflow-hidden">
+    <h3 class="text-2xl font-bold uppercase mb-6 text-center">COMENTÁRIOS RECENTES</h3> <!-- Título da seção de comentários -->
+    
+    <div class="carousel relative">
+      <div class="carousel-container flex overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide"> <!-- Container do carrossel com rolagem horizontal -->
+        <% Comment.order(created_at: :desc).limit(8).each do |comment| %> <!-- Loop pelos comentários mais recentes, aumentado para 8 -->
+          <div class="carousel-item flex-shrink-0 w-full md:w-1/2 lg:w-1/3 p-4 snap-start"> <!-- Item do carrossel responsivo -->
+            <div class="bg-white shadow-md p-6 rounded-lg h-full border-l-4 border-gray-800 hover:shadow-lg transition-shadow"> <!-- Card do comentário com efeito hover -->
+              <p class="text-gray-600 mb-4 italic">"<%= comment.content.truncate(120) %>"</p> <!-- Conteúdo do comentário, aumentado para 120 caracteres -->
+              <div class="flex justify-between items-center"> <!-- Informações do autor -->
+                <p class="font-medium text-gray-800"><%= begin comment.user.email rescue ActiveRecord::Encryption::Errors::Decryption "[email protegido]" end %></p> <!-- Email do autor -->
+                <p class="text-sm text-gray-500"><%= l comment.created_at, format: :short %></p> <!-- Data do comentário -->
+              </div>
+              <p class="text-sm text-gray-500 mt-2">Em: <%= link_to comment.post.title, comment.post, class: "text-blue-600 hover:underline" %></p> <!-- Link para o post -->
+            </div>
+          </div>
+        <% end %>
+      </div>
+      
+      <!-- Controles de navegação do carrossel (opcional) -->
+      <div class="flex justify-center mt-4 space-x-2">
+        <button class="carousel-prev w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300">&larr;</button> <!-- Botão anterior -->
+        <button class="carousel-next w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300">&rarr;</button> <!-- Botão próximo -->
+      </div>
+    </div>
+  </div>
+  
+  <!-- Posts em destaque -->
+  <div class="mb-12">
+    <h3 class="text-2xl font-bold uppercase mb-6 text-center">POSTS EM DESTAQUE</h3>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <% @featured_posts.each do |post| %>
+        <div class="card">
+          <% if post.image.attached? %>
+            <div class="img-container">
+              <%= image_tag post.image.variant(resize_to_limit: [600, 400]), class: "img-cover" %>
+            </div>
+          <% else %>
+            <div class="w-full h-64 bg-gray-200 flex items-center justify-center">
+              <span class="text-gray-500">Sem imagem</span>
+            </div>
+          <% end %>
+          <div class="card-body">
+            <h3 class="text-xl font-semibold text-gray-800 mb-2 uppercase"><%= post.title %></h3>
+            <p class="text-sm text-gray-500 mb-4">Publicado por <%= begin
+                                                                  post.user.email
+                                                                rescue ActiveRecord::Encryption::Errors::Decryption
+                                                                  "[email protegido]"
+                                                                end %> em <%= l post.created_at, format: :short %></p>
+            <p class="text-gray-600 mb-4"><%= post.content.to_plain_text.truncate(100) %></p>
+            <%= link_to "LER MAIS", post, class: "button button-blue", data: { ripple_light: true } %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  
+  <!-- Categorias em destaque -->
+  <div class="mb-12">
+    <h3 class="text-2xl font-bold uppercase mb-6 text-center">EXPLORE POR CATEGORIA</h3>
+    
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <% ["Viagens", "Tecnologia", "Culinária", "Esportes", "Música", "Cinema"].each do |categoria| %>
+        <a href="/categories" class="bg-white shadow-md p-6 text-center hover:bg-gray-50 transition duration-300">
+          <h4 class="text-lg font-semibold text-gray-800 uppercase"><%= categoria %></h4>
+        </a>
+      <% end %>
+    </div>
+  </div>
+  
+  <!-- Call to action -->
+  <div class="bg-gray-800 text-white p-12 text-center rounded-lg">
+    <h3 class="text-2xl font-bold mb-4">QUER FICAR POR DENTRO DAS NOVIDADES?</h3>
+    <p class="mb-6">Inscreva-se em nossa newsletter para receber atualizações sobre novos posts.</p>
+    <div class="max-w-md mx-auto flex">
+      <input type="email" placeholder="Seu email" class="flex-grow px-4 py-3 rounded-l-md text-gray-800">
+      <button class="bg-indigo-600 hover:bg-indigo-700 px-6 py-3 rounded-r-md uppercase font-medium">Inscrever</button>
+    </div>
+  </div>
+</div>

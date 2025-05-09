@@ -1,0 +1,21 @@
+<% content_for :title, "Categorias" %>
+
+<div class="container mx-auto px-4 py-8">
+  <div class="mb-8 text-center">
+    <h2 class="text-2xl font-bold uppercase mb-2">CATEGORIAS</h2>
+    <div class="w-24 h-1 bg-gray-800 mx-auto"></div>
+  </div>
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <!-- Exemplo de categorias - você pode substituir por categorias reais do seu banco de dados -->
+    <% ["Viagens", "Tecnologia", "Culinária", "Esportes", "Música", "Cinema"].each do |categoria| %>
+      <div class="bg-white shadow-md overflow-hidden">
+        <div class="p-6">
+          <h3 class="text-xl font-semibold text-gray-800 mb-2 uppercase"><%= categoria %></h3>
+          <p class="text-gray-600 mb-4">Explore os posts relacionados a <%= categoria.downcase %>.</p>
+          <a href="#" class="inline-block bg-gray-800 text-white px-4 py-2 text-sm uppercase font-medium hover:bg-gray-700">VER POSTS</a>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

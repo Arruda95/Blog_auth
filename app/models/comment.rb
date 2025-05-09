@@ -7,6 +7,9 @@ class Comment < ApplicationRecord
   # Isso estabelece que um comentário sempre está associado a um post específico
   belongs_to :post
   
+  # Validações explícitas para garantir a qualidade e segurança dos comentários
+  validates :content, presence: true, length: { maximum: 1000 }
+  
   # Validações implícitas:
   # - user_id: não pode ser nulo (devido ao belongs_to)
   # - post_id: não pode ser nulo (devido ao belongs_to)

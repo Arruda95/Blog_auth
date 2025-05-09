@@ -4,3 +4,6 @@ import "controllers"
 
 import "trix"
 import "@rails/actiontext"
+
+// Importa o script do carrossel para funcionalidade de comentários na página inicial
+import "./carousel"

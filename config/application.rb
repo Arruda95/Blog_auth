@@ -8,6 +8,9 @@ Bundler.require(*Rails.groups)
 
 module BlogAuth
   class Application < Rails::Application
+    config.active_record.encryption.primary_key = "VQ5eVYHyFpGV682FIjTK7dpFCnMCiRef"
+    config.active_record.encryption.deterministic_key = "UrJ3Dh0Z3zTopHMzhv2CgTawtpsOwQzQ"
+    config.active_record.encryption.key_derivation_salt = "2GXVfWAMiuP0wZuVWD0E0mplDn2gDTBB"
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.0
 

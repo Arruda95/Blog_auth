@@ -1,7 +1,15 @@
 class PostsController < ApplicationController
   # Configura ações de autenticação e carregamento de post
-  before_action :require_login, except: [:index, :show]
-  before_action :set_post, only: [:show, :edit, :update, :destroy]
+  before_action :require_login, except: [ :index, :show, :feed ]
+  before_action :set_post, only: [ :show, :edit, :update, :destroy ]
+
+  # Fornece o feed RSS dos posts
+  def feed
+    @posts = Post.all.limit(20)
+    respond_to do |format|
+      format.rss { render layout: false }
+    end
+  end
 
 
   # Lista todos os posts do blog com paginação
@@ -11,7 +19,7 @@ class PostsController < ApplicationController
 
   # Exibe um post específico com seus comentários paginados
   def show
-    @post = Post.find(params[:id])
+    @post = Post.friendly.find(params[:id])
     @comments = @post.comments.page(params[:page]).per(5)
   end
 
@@ -69,12 +77,12 @@ class PostsController < ApplicationController
   end
 
   private
-    # Método privado para carregar um post específico com base no ID
+    # Método privado para carregar um post específico com base no ID ou slug
     # Este método é chamado pelo before_action para as ações show, edit, update e destroy
     # Use callbacks to share common setup or constraints between actions.
     def set_post
-      # Busca o post pelo ID fornecido na URL e armazena na variável @post
-      # params.expect(:id) garante que o parâmetro id esteja presente, lançando exceção caso contrário
+      # Busca o post pelo ID ou slug fornecido na URL e armazena na variável @post
+      # Usa friendly.find para buscar pelo slug se disponível
       @post = Post.friendly.find(params[:id])
     end
 
