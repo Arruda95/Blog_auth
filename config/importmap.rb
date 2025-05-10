@@ -8,3 +8,5 @@ pin_all_from "app/javascript/controllers", under: "controllers" # Controladores 
 pin "trix" # Editor de texto rico
 pin "@rails/actiontext", to: "actiontext.esm.js" # Suporte para ActionText
 pin "carousel", to: "carousel.js" # Script do carrossel de comentários
+pin "trix"
+pin "@rails/actiontext", to: "actiontext.esm.js"

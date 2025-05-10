@@ -5,6 +5,7 @@
     <h2 class="text-2xl md:text-3xl font-bold uppercase mb-2">ENTRE EM CONTATO</h2> <!-- Título da página com tamanho responsivo -->
     <div class="w-24 h-1 bg-gray-800 mx-auto"></div> <!-- Linha decorativa -->
     <p class="text-gray-600 mt-4 max-w-xl mx-auto">Envie-nos uma mensagem e responderemos o mais breve possível.</p> <!-- Descrição adicional -->
+  </div>
   
   <div class="max-w-2xl mx-auto bg-white shadow-md rounded-lg overflow-hidden"> <!-- Card do formulário com cantos arredondados -->
     <div class="md:flex"> <!-- Layout flexível para telas médias e grandes -->
@@ -28,32 +29,32 @@
       
       <div class="md:w-2/3 p-6 md:p-8"> <!-- Formulário de contato -->
         <h3 class="text-xl font-bold mb-4">ENVIE SUA MENSAGEM</h3> <!-- Título do formulário -->
-        <form class="space-y-4 md:space-y-5"> <!-- Formulário com espaçamento entre campos, aumentado em telas médias -->
+        <%= form_with(model: @contact, url: contact_path, method: :post, class: "space-y-4 md:space-y-5") do |form| %>
           <div> <!-- Campo de nome -->
-            <label for="name" class="block text-sm font-medium text-gray-700">Nome</label> <!-- Rótulo do campo -->
-            <input type="text" name="name" id="name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"> <!-- Campo de entrada -->
+            <%= form.label :name, "Nome", class: "block text-sm font-medium text-gray-700" %>
+            <%= form.text_field :name, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500" %>
           </div>
           
           <div> <!-- Campo de email -->
-            <label for="email" class="block text-sm font-medium text-gray-700">Email</label> <!-- Rótulo do campo -->
-            <input type="email" name="email" id="email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"> <!-- Campo de entrada -->
+            <%= form.label :email, "Email", class: "block text-sm font-medium text-gray-700" %>
+            <%= form.email_field :email, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500" %>
           </div>
           
           <div> <!-- Campo de assunto -->
-            <label for="subject" class="block text-sm font-medium text-gray-700">Assunto</label> <!-- Rótulo do campo -->
-            <input type="text" name="subject" id="subject" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"> <!-- Campo de entrada -->
+            <%= form.label :subject, "Assunto", class: "block text-sm font-medium text-gray-700" %>
+            <%= form.text_field :subject, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500" %>
           </div>
           
           <div> <!-- Campo de mensagem -->
-            <label for="message" class="block text-sm font-medium text-gray-700">Mensagem</label> <!-- Rótulo do campo -->
-            <textarea name="message" id="message" rows="5" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"></textarea> <!-- Área de texto -->
+            <%= form.label :message, "Mensagem", class: "block text-sm font-medium text-gray-700" %>
+            <%= form.text_area :message, rows: 5, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500" %>
           </div>
-      
-      <div> <!-- Container do botão -->
-        <button type="submit" class="w-full bg-gray-800 text-white px-6 py-3 text-sm uppercase font-medium hover:bg-gray-700 transition-colors duration-300 rounded">ENVIAR MENSAGEM</button> <!-- Botão de envio com efeito de transição -->
+          
+          <div class="mt-6"> <!-- Container do botão -->
+            <%= form.submit "Enviar Mensagem", class: "w-full sm:w-auto bg-gray-800 hover:bg-gray-900 text-white font-medium py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300" %>
+          </div>
+        <% end %>
       </div>
-    </form>
-  </div>
     </div>
   </div>
 </div>

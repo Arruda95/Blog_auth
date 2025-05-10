@@ -1,40 +1,32 @@
 class PostsController < ApplicationController
-  # Configura ações de autenticação e carregamento de post
-  before_action :require_login, except: [ :index, :show, :feed ]
-  before_action :set_post, only: [ :show, :edit, :update, :destroy ]
+  before_action :require_login, except: [ :index, :show, :feed ] # Configura ações de autenticação
+  before_action :set_post, only: [ :show, :edit, :update, :destroy ] # Carregamento de post
 
-  # Fornece o feed RSS dos posts
-  def feed
+  def feed # Fornece o feed RSS dos posts
     @posts = Post.all.limit(20)
     respond_to do |format|
       format.rss { render layout: false }
     end
   end
 
-
-  # Lista todos os posts do blog com paginação
-  def index
+  def index # Lista todos os posts do blog com paginação
     @posts = Post.page(params[:page]).per(5)
   end
 
-  # Exibe um post específico com seus comentários paginados
-  def show
+  def show # Exibe um post específico com seus comentários paginados
     @post = Post.friendly.find(params[:id])
     @comments = @post.comments.page(params[:page]).per(5)
   end
 
-  # Exibe o formulário para criar um novo post
-  def new
+  def new # Exibe o formulário para criar um novo post
     @post = Post.new
   end
 
-  # Exibe o formulário para editar um post existente
-  def edit
+  def edit # Exibe o formulário para editar um post existente
     authorize @post
   end
 
-  # Processa o formulário de criação de post
-  def create
+  def create # Processa o formulário de criação de post
     @post = Post.new(post_params)
     @post.user = current_user
 
@@ -49,8 +41,7 @@ class PostsController < ApplicationController
     end
   end
 
-  # Processa o formulário de atualização de post
-  def update
+  def update # Processa o formulário de atualização de post
     authorize @post
     respond_to do |format|
       if @post.update(post_params)
@@ -63,31 +54,22 @@ class PostsController < ApplicationController
     end
   end
 
-  # Exclui um post existente
-  def destroy
+  def destroy # Exclui um post existente
     authorize @post
     @post.destroy!
 
     respond_to do |format|
-      # status: :see_other (303) indica que o cliente deve fazer uma requisição GET para o URL fornecido
-      format.html { redirect_to posts_path, status: :see_other, notice: "Post foi excluído com sucesso." }
-      # Para requisições JSON, retorna apenas o cabeçalho sem conteúdo (status 204 No Content)
-      format.json { head :no_content }
+      format.html { redirect_to posts_path, status: :see_other, notice: "Post foi excluído com sucesso." } # status: :see_other (303) indica requisição GET
+      format.json { head :no_content } # Para requisições JSON, retorna apenas o cabeçalho sem conteúdo
     end
   end
 
   private
-    # Método privado para carregar um post específico com base no ID ou slug
-    # Este método é chamado pelo before_action para as ações show, edit, update e destroy
-    # Use callbacks to share common setup or constraints between actions.
-    def set_post
-      # Busca o post pelo ID ou slug fornecido na URL e armazena na variável @post
-      # Usa friendly.find para buscar pelo slug se disponível
-      @post = Post.friendly.find(params[:id])
+    def set_post # Carrega um post específico com base no ID ou slug
+      @post = Post.friendly.find(params[:id]) # Usa friendly.find para buscar pelo slug se disponível
     end
 
-    # Método para filtrar os parâmetros permitidos do formulário
-    def post_params
+    def post_params # Filtra os parâmetros permitidos do formulário
       params.require(:post).permit(:title, :content, :image, :user_id)
     end
 end

@@ -2,5 +2,5 @@
   <p><strong><%= comment.user.name %></strong> <%= comment.created_at.strftime("%d/%m/%Y %H:%M") %></p>
   <p><%= comment.content %></p>
 
-  <%= link_to "Excluir", post_comment_path(@post, comment), method: :delete, data: { turbo_confirm: "Tem certeza?" } %>
+  <%= link_to "Excluir", post_comment_path(@post, comment), data: { turbo_method: :delete, turbo_confirm: "Tem certeza?" }, class: "text-red-600 hover:text-red-900 text-sm" %>
 </div>

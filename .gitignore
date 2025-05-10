@@ -36,9 +36,53 @@
 /app/assets/builds/*
 !/app/assets/builds/.keep
 
-/config/credentials/development.key
+# Ignore all credentials files
+/config/credentials/*.key
+/config/credentials/*.yml.enc
+/config/master.key.bak*
 
-/config/credentials/production.key
-/node_modules/*
- /config/credentials/*
- /config/master.key.bak*
+# Ignore node modules
+/node_modules
+
+# Ignore database configuration
+/config/database.yml
+
+# Ignore coverage reports
+/coverage
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE files
+/.idea
+/.vscode
+
+# Ignore yarn files
+/yarn-error.log
+.yarn-integrity
+
+# Ignore uploaded files in development
+/public/uploads
+
+# Ignore local environment variables
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Ignore byebug history
+.byebug_history
+
+# Ignore SimpleCov coverage files
+/coverage/
+
+# Ignore precompiled assets
+/public/packs
+/public/packs-test
+
+# Ignore yarn debug logs
+yarn-debug.log*
+
+# Ignore RSpec examples status persistence file
+spec/examples.txt

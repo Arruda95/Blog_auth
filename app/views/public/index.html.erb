@@ -1,4 +1,4 @@
-<% content_for :title, "Posts" %>
+<% content_for :title, "Blog" %>
 
 <div class="container mx-auto px-4 py-8"> <!-- Container principal com espaçamento responsivo -->
   <div class="mb-8 text-center">
@@ -6,23 +6,7 @@
     <div class="w-32 h-1 bg-blue-600 mx-auto"></div> <!-- Linha decorativa modernizada -->
   </div>
   
-  <% if current_user %> <!-- Verifica se o usuário está logado -->
-    <div class="mb-8 text-center">
-      <%= link_to "Novo post", new_post_path, class: "button button-blue inline-block px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg transform hover:-translate-y-1", data: { ripple_light: true } %> <!-- Botão de novo post modernizado -->
-    </div>
-  <% end %>
-  
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10"> <!-- Grid responsivo com diferentes colunas baseado no tamanho da tela, com espaçamento aumentado -->
-    <% if current_user %> <!-- Verifica se o usuário está logado -->
-      <div class="card bg-white shadow-lg rounded-xl overflow-hidden transition-all duration-300 transform hover:scale-[1.03] hover:shadow-xl border border-gray-100"> <!-- Card para novo post modernizado -->
-        <%= link_to new_post_path, class: "flex flex-col items-center justify-center h-full p-8 text-center" do %>
-          <span class="material-icons text-6xl text-blue-500 mb-4">add_circle</span> <!-- Ícone de adicionar modernizado -->
-          <h3 class="text-xl font-medium text-blue-700">Criar novo post</h3> <!-- Texto do botão modernizado -->
-          <p class="text-sm text-gray-500 mt-2">Clique para adicionar um novo conteúdo</p> <!-- Descrição -->
-        <% end %>
-      </div>
-    <% end %>
-    
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10"> <!-- Grid responsivo com diferentes colunas baseado no tamanho da tela -->
     <% @posts.each do |post| %> <!-- Loop pelos posts -->
       <div class="card bg-white shadow-lg rounded-xl overflow-hidden transition-all duration-300 transform hover:scale-[1.03] hover:shadow-xl border border-gray-100 h-full flex flex-col"> <!-- Card modernizado com altura total -->
         <% if post.image.attached? %> <!-- Verifica se o post tem imagem -->
@@ -49,23 +33,12 @@
           </p> <!-- Informações do autor modernizadas -->
           <p class="text-sm md:text-base text-gray-600 mb-4 flex-grow"><%= post.content.to_plain_text.truncate(100) %></p> <!-- Resumo do conteúdo -->
           <div class="flex justify-between items-center mt-auto pt-4 border-t border-gray-100"> <!-- Rodapé do card com borda superior -->
-            <%= link_to post, class: "button button-blue inline-block px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg transform hover:-translate-y-1", data: { ripple_light: true } do %>
+            <%= link_to public_post_path(post), class: "button button-blue inline-block px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg transform hover:-translate-y-1", data: { ripple_light: true } do %>
               <span class="flex items-center">
                 <span>LER MAIS</span>
                 <span class="material-icons text-sm ml-1">arrow_forward</span>
               </span>
             <% end %> <!-- Botão de leitura modernizado -->
-            
-            <% if current_user && post.user == current_user %> <!-- Verifica se o usuário atual é o autor do post -->
-              <div class="flex space-x-3"> <!-- Área de ações do post -->
-                <%= link_to edit_post_path(post), class: "text-blue-600 hover:text-blue-800 flex items-center text-sm bg-blue-50 hover:bg-blue-100 p-2 rounded-full transition-colors" do %>
-                  <span class="material-icons text-sm">edit</span> <!-- Ícone de editar -->
-                <% end %>
-                <%= link_to post, data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir este post?" }, class: "text-red-600 hover:text-red-800 flex items-center text-sm bg-red-50 hover:bg-red-100 p-2 rounded-full transition-colors delete-post-link" do %>
-                  <span class="material-icons text-sm">delete</span> <!-- Ícone de excluir -->
-                <% end %>
-              </div>
-            <% end %>
           </div>
         </div>
       </div>
@@ -75,5 +48,10 @@
   <div class="mt-8 flex justify-center"> <!-- Container da paginação -->
     <%= paginate @posts, class: "pagination" %> <!-- Paginação dos posts -->
   </div>
-</div>
+  
+  <div class="mt-12 text-center">
+    <p class="text-gray-600 mb-4">Quer compartilhar suas ideias?</p>
+    <%= link_to "Fazer login", login_path, class: "inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors mr-4" %>
+    <%= link_to "Cadastrar-se", signup_path, class: "inline-block bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-gray-900 transition-colors" %>
+  </div>
 </div>

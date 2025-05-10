@@ -35,7 +35,7 @@
           <%= link_to edit_post_path(@post), class: "text-blue-600 hover:text-blue-800 flex items-center" do %>
             <span class="material-icons mr-1">edit</span> Editar <!-- Botão de editar -->
           <% end %>
-          <%= link_to @post, method: :delete, data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir este post?" }, class: "text-red-600 hover:text-red-800 flex items-center" do %>
+          <%= link_to @post, data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir este post?" }, class: "text-red-600 hover:text-red-800 flex items-center" do %>
             <span class="material-icons mr-1">delete</span> Excluir <!-- Botão de excluir -->
           <% end %>
         </div>
@@ -82,7 +82,7 @@
           <% if comment.user == current_user %> <!-- Verifica se o comentário é do usuário atual -->
             <div class="mt-2 text-right"> <!-- Botões de ação -->
 
-              <%= link_to 'Excluir', [comment.post, comment], method: :delete, data: { turbo_method: :delete, turbo_confirm: 'Tem certeza?' }, class: "text-red-600 hover:text-red-900 text-sm" %>
+              <%= link_to 'Excluir', [comment.post, comment], data: { turbo_method: :delete, turbo_confirm: 'Tem certeza?' }, class: "text-red-600 hover:text-red-900 text-sm delete-comment-link" %>
             </div>
           <% end %>
         </div>
@@ -115,7 +115,7 @@
   
   <div class="max-w-4xl mx-auto mt-4 p-4 flex justify-between">
     <%= link_to "Voltar para posts", posts_path, class: "text-gray-800 hover:underline font-medium" %>
-    <% if @post.authored_by?(current_user) %>
+    <% if current_user && @post.user_id == current_user.id %>
       <%= link_to "Editar post", edit_post_path(@post), class: "text-gray-800 hover:underline font-medium" %>
     <% end %>
   </div>

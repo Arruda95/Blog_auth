@@ -6,7 +6,7 @@
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
   <%= javascript_importmap_tags %>
-  <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+  <%= stylesheet_link_tag "tailwind", "inter-font", "trix_responsive", "data-turbo-track": "reload" %>
   <%= auto_discovery_link_tag :rss, feed_path(format: :rss), title: "RSS Feed" %>
   <!-- Material Icons Link -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
@@ -38,6 +38,21 @@
       color: #1E40AF;
       border-bottom: 2px solid #1E40AF;
     }
+    /* Estilos para o editor Trix */
+    trix-editor {
+      min-height: 15rem;
+      max-height: 30rem;
+      overflow-y: auto;
+      width: 100%;
+    }
+    trix-toolbar .trix-button-row {
+      flex-wrap: wrap;
+    }
+    @media (max-width: 640px) {
+      trix-toolbar .trix-button-group {
+        margin-bottom: 5px;
+      }
+    }
   </style>
   <%= javascript_include_tag "carousel" %>
 </head>
@@ -56,9 +71,13 @@
             <div class="hidden md:block">
               <div class="ml-10 flex items-baseline space-x-4">
                 <%= link_to "HOME", root_path, class: "nav-link #{current_page?(root_path) ? 'active' : 'text-gray-600 hover:text-blue-600'} px-3 py-2 text-sm font-medium uppercase transition-colors" %>
-                <%= link_to "POSTS", posts_path, class: "nav-link #{current_page?(posts_path) ? 'active' : 'text-gray-600 hover:text-blue-600'} px-3 py-2 text-sm font-medium uppercase transition-colors" %>
-                <%= link_to "CATEGORIES", "/categories", class: "nav-link #{current_page?('/categories') ? 'active' : 'text-gray-600 hover:text-blue-600'} px-3 py-2 text-sm font-medium uppercase transition-colors" %>
-                <%= link_to "CONTACT", "/contact", class: "nav-link #{current_page?('/contact') ? 'active' : 'text-gray-600 hover:text-blue-600'} px-3 py-2 text-sm font-medium uppercase transition-colors" %>
+                <% if current_user %>
+                  <%= link_to "ARTIGOS", posts_path, class: "nav-link #{current_page?(posts_path) ? 'active' : 'text-gray-600 hover:text-blue-600'} px-3 py-2 text-sm font-medium uppercase transition-colors" %>
+                <% else %>
+                  <%= link_to "BLOG", blog_path, class: "nav-link #{current_page?(blog_path) ? 'active' : 'text-gray-600 hover:text-blue-600'} px-3 py-2 text-sm font-medium uppercase transition-colors" %>
+                <% end %>
+                <%= link_to "CATEGORIAS", "/categories", class: "nav-link #{current_page?('/categories') ? 'active' : 'text-gray-600 hover:text-blue-600'} px-3 py-2 text-sm font-medium uppercase transition-colors" %>
+                <%= link_to "CONTATOS", "/contact", class: "nav-link #{current_page?('/contact') ? 'active' : 'text-gray-600 hover:text-blue-600'} px-3 py-2 text-sm font-medium uppercase transition-colors" %>
               </div>
             </div>
           </div>
@@ -78,8 +97,7 @@
                                                                 rescue ActiveRecord::Encryption::Errors::Decryption
                                                                   "[email protegido]"
                                                                 end %></span>
-                <%= link_to "Novo Post", new_post_path, class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium transition-colors" %>
-                <%= link_to "Logout", logout_path, method: :delete, data: { turbo_method: :delete, turbo_confirm: "Deseja sair?" }, class: "ml-2 text-gray-600 hover:text-red-600 px-3 py-2 text-sm font-medium transition-colors" %>
+                <%= link_to "Logout", logout_path, data: { turbo_method: :delete, turbo_confirm: "Deseja sair?" }, class: "ml-2 text-gray-600 hover:text-red-600 px-3 py-2 text-sm font-medium transition-colors" %>
               <% else %>
                 <%= link_to "Login", login_path, class: "text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors" %>
                 <%= link_to "Cadastro", signup_path, class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium transition-colors" %>
@@ -91,10 +109,14 @@
     </header>
     
     <!-- Menu mobile (inicialmente escondido) -->
-    <div class="hidden md:hidden" id="mobile-menu">
+    <div class="hidden md:hidden absolute w-full bg-white z-50 shadow-lg" id="mobile-menu">
       <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-gray-200">
         <%= link_to "HOME", root_path, class: "#{current_page?(root_path) ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50 hover:text-blue-600'} block px-3 py-2 rounded-md text-base font-medium" %>
-        <%= link_to "POSTS", posts_path, class: "#{current_page?(posts_path) ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50 hover:text-blue-600'} block px-3 py-2 rounded-md text-base font-medium" %>
+        <% if current_user %>
+          <%= link_to "POSTS", posts_path, class: "#{current_page?(posts_path) ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50 hover:text-blue-600'} block px-3 py-2 rounded-md text-base font-medium" %>
+        <% else %>
+          <%= link_to "BLOG", blog_path, class: "#{current_page?(blog_path) ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50 hover:text-blue-600'} block px-3 py-2 rounded-md text-base font-medium" %>
+        <% end %>
         <%= link_to "CATEGORIES", "/categories", class: "#{current_page?('/categories') ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50 hover:text-blue-600'} block px-3 py-2 rounded-md text-base font-medium" %>
         <%= link_to "CONTACT", "/contact", class: "#{current_page?('/contact') ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50 hover:text-blue-600'} block px-3 py-2 rounded-md text-base font-medium" %>
         
@@ -103,10 +125,7 @@
             <div class="flex items-center px-3 py-2">
               <span class="text-gray-700 text-sm">Logado como: <%= begin current_user.email.truncate(20) rescue ActiveRecord::Encryption::Errors::Decryption "[email protegido]" end %></span>
             </div>
-            <%= link_to new_post_path, class: "text-gray-600 hover:bg-gray-50 hover:text-blue-600 flex items-center px-3 py-2 rounded-md text-base font-medium" do %>
-              <span class="material-icons mr-2 text-sm">add_circle</span> Novo Post
-            <% end %>
-            <%= link_to logout_path, method: :delete, data: { turbo_method: :delete, turbo_confirm: "Deseja sair?" }, class: "text-gray-600 hover:bg-gray-50 hover:text-red-600 flex items-center px-3 py-2 rounded-md text-base font-medium" do %>
+            <%= link_to logout_path, data: { turbo_method: :delete, turbo_confirm: "Deseja sair?" }, class: "text-gray-600 hover:bg-gray-50 hover:text-red-600 flex items-center px-3 py-2 rounded-md text-base font-medium" do %>
               <span class="material-icons mr-2 text-sm">logout</span> Logout
             <% end %>
           <% else %>
@@ -167,19 +186,6 @@
       </div>
     </footer>
   </div>
-  
-  <script>
-    // Script para controlar o menu mobile
-    document.addEventListener('turbo:load', function() {
-      const mobileMenuButton = document.querySelector('.mobile-menu-button');
-      const mobileMenu = document.getElementById('mobile-menu');
-      
-      if (mobileMenuButton && mobileMenu) {
-        mobileMenuButton.addEventListener('click', function() {
-          mobileMenu.classList.toggle('hidden');
-        });
-      }
-    });
-  </script>
+
 </body>
 </html>

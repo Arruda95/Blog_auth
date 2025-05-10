@@ -15,12 +15,31 @@
 
   <div class="mb-6">
     <%= form.label :title, "Título", class: "block text-sm font-medium text-gray-700 mb-2" %>
-    <%= form.text_field :title, class: "form-input mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent px-4 py-3" %>
+    <%= form.text_field :title, class: "form-input mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent px-4 py-3", placeholder: "Digite o título do post" %>
   </div>
 
   <div class="mb-6">
     <%= form.label :content, "Conteúdo", class: "block text-sm font-medium text-gray-700 mb-2" %>
-    <%= form.rich_text_area :content, class: "mt-1 block w-full border border-gray-300 rounded-lg shadow-sm", id: "post_content_trix" %>
+    <div class="trix-content-wrapper w-full border border-gray-300 rounded-lg shadow-sm overflow-visible relative">
+      <%= form.text_area :content, id: "post_content_trix", class: "w-full focus:ring-2 focus:ring-blue-500 focus:border-transparent", direct_upload: true %>
+      <div class="text-sm text-gray-500 mt-1 ml-1">* Campo obrigatório - O conteúdo não pode ficar em branco</div>
+    </div>
+    <style>
+      trix-editor {
+        min-height: 300px !important;
+        display: block !important;
+        position: relative !important;
+        z-index: 10 !important;
+        overflow: auto !important;
+      }
+      .trix-content-wrapper {
+        position: relative !important;
+        z-index: 5 !important;
+      }
+      .trix-button-group {
+        z-index: 15 !important;
+      }
+    </style>
   </div>
 
   <div class="mb-6">
@@ -39,16 +58,89 @@
 <% end %>
 
 <script>
-  // Garante que o editor Trix seja inicializado corretamente
-  document.addEventListener("turbo:load", function() {
-    if (document.getElementById("post_content_trix")) {
-      // Força a reinicialização do editor se necessário
-      const trixElement = document.querySelector("trix-editor");
-      if (trixElement) {
-        trixElement.addEventListener("trix-initialize", function() {
-          console.log("Editor Trix inicializado");
+  // Função para inicializar o editor Trix
+  function initializeTrixEditor() {
+    const contentField = document.getElementById("post_content_trix");
+    if (!contentField) return;
+    
+    // Forçar a visibilidade do editor
+    setTimeout(function() {
+      const trixEditor = document.querySelector("trix-editor");
+      if (trixEditor) {
+        // Garantir que o editor esteja visível e interativo
+        trixEditor.style.display = "block";
+        trixEditor.style.minHeight = (window.innerWidth <= 640) ? "200px" : "300px";
+        trixEditor.style.border = "1px solid #e2e8f0";
+        trixEditor.style.padding = "0.75rem";
+        trixEditor.style.position = "relative";
+        trixEditor.style.zIndex = "10";
+        trixEditor.setAttribute("contenteditable", "true");
+        
+        // Remover qualquer sobreposição que possa estar bloqueando a interação
+        const wrapper = trixEditor.closest('.trix-content-wrapper');
+        if (wrapper) {
+          wrapper.style.position = "relative";
+          wrapper.style.zIndex = "5";
+          // Remover qualquer elemento que possa estar sobrepondo o editor
+          const overlays = wrapper.querySelectorAll('.trix-overlay');
+          overlays.forEach(overlay => overlay.remove());
+        }
+        
+        console.log("Editor Trix inicializado e configurado para permitir edição");
+        
+        // Verificar se há conteúdo
+        trixEditor.addEventListener("trix-blur", function() {
+          if (!trixEditor.editor || !trixEditor.editor.getDocument().toString() || trixEditor.editor.getDocument().toString().trim() === "") {
+            trixEditor.classList.add("border-red-500");
+            const errorMsg = document.createElement("p");
+            errorMsg.className = "text-red-500 text-sm mt-1";
+            errorMsg.id = "content-error-msg";
+            errorMsg.textContent = "O conteúdo não pode ficar em branco";
+            
+            const existingMsg = document.getElementById("content-error-msg");
+            if (existingMsg) existingMsg.remove();
+            
+            trixEditor.parentNode.appendChild(errorMsg);
+          } else {
+            trixEditor.classList.remove("border-red-500");
+            const errorMsg = document.getElementById("content-error-msg");
+            if (errorMsg) errorMsg.remove();
+          }
         });
+        
+        // Ajustar altura do editor quando a janela for redimensionada
+        function adjustEditorHeight() {
+          trixEditor.style.minHeight = (window.innerWidth <= 640) ? "200px" : "300px";
+        }
+        
+        window.addEventListener('resize', adjustEditorHeight);
+        
+        // Garantir que o foco funcione corretamente
+        trixEditor.addEventListener("click", function() {
+          trixEditor.focus();
+        });
+        
+        // Forçar inicialização do editor
+        if (trixEditor.editor) {
+          console.log("Editor já inicializado");
+        } else {
+          console.log("Forçando inicialização do editor");
+          // Algumas vezes o editor precisa de um pequeno empurrão para inicializar
+          const event = new Event('focus');
+          trixEditor.dispatchEvent(event);
+        }
       }
-    }
-  });
+    }, 100); // Pequeno atraso para garantir que o DOM esteja pronto
+  }
+  
+  // Inicializar o editor quando o documento estiver pronto
+  document.addEventListener("turbo:load", initializeTrixEditor);
+  document.addEventListener("DOMContentLoaded", initializeTrixEditor);
+  document.addEventListener("turbo:render", initializeTrixEditor);
+  document.addEventListener("turbo:frame-render", initializeTrixEditor);
+  
+  // Garantir que o editor seja inicializado mesmo após o carregamento da página
+  if (document.readyState === "complete" || document.readyState === "interactive") {
+    setTimeout(initializeTrixEditor, 100);
+  }
 </script>
