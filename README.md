@@ -65,7 +65,7 @@ As views são organizadas por controlador, seguindo a convenção do Rails:
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/seu-usuario/blog_auth.git
+   git clone https://github.com/Arruda95/Blog_auth
    cd blog_auth
    ```
 
@@ -199,31 +199,24 @@ Consulte o arquivo `config/deploy.yml` para mais detalhes sobre a configuração
 
 ### Página Inicial
 
-![Página Inicial do Blog Auth](caminho/para/imagem/homepage.png)
+![Página Inicial do Blog Auth](public/Home.png)
 
 *Adicione aqui uma captura de tela da página inicial do blog, mostrando a lista de posts recentes e a navegação principal.*
 
 ### Página de Login
 
-![Página de Login](caminho/para/imagem/login.png)
+![Página de Login](public/Login.png)
 
-*Adicione aqui uma captura de tela da página de login, mostrando o formulário de autenticação.*
 
 ### Criação de Post
 
-![Página de Criação de Post](caminho/para/imagem/new_post.png)
+![Página de Criação de Post](public/Artigos.png)
 
-*Adicione aqui uma captura de tela da página de criação de post, mostrando o editor e as opções disponíveis.*
 
-### Visualização de Post
-
-![Visualização de Post](caminho/para/imagem/view_post.png)
-
-*Adicione aqui uma captura de tela da página de visualização de um post, mostrando o conteúdo e os comentários.*
 
 ### Perfil de Usuário
 
-![Perfil de Usuário](caminho/para/imagem/user_profile.png)
+![Perfil de Usuário](public/Login.png)
 
 *Adicione aqui uma captura de tela da página de perfil de usuário, mostrando as informações e posts do usuário.*
 
