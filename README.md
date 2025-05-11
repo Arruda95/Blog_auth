@@ -1,4 +1,3 @@
-# Blog Auth
 
 # Blog Auth
 
@@ -201,7 +200,7 @@ Consulte o arquivo `config/deploy.yml` para mais detalhes sobre a configuração
 
 ![Página Inicial do Blog Auth](public/Home.png)
 
-*Adicione aqui uma captura de tela da página inicial do blog, mostrando a lista de posts recentes e a navegação principal.*
+*
 
 ### Página de Login
 
@@ -214,11 +213,11 @@ Consulte o arquivo `config/deploy.yml` para mais detalhes sobre a configuração
 
 
 
-### Perfil de Usuário
+### Cadastro de Usuário
 
-![Perfil de Usuário](public/Login.png)
+![Perfil de Usuário](public/Cadastro.png)
 
-*Adicione aqui uma captura de tela da página de perfil de usuário, mostrando as informações e posts do usuário.*
+
 
 ## Contribuição
 
@@ -236,11 +235,11 @@ Este projeto está licenciado sob a [MIT License](LICENSE).
 
 ## Contato
 
-* **Desenvolvedor:** Seu Nome
-* **Email:** seu.email@exemplo.com
-* **GitHub:** [seu-usuario](https://github.com/seu-usuario)
-* **LinkedIn:** [seu-perfil](https://linkedin.com/in/seu-perfil)
+* **Desenvolvedor:** Vitor Arruda
+* **Email:** two.vitor@gmail.com
+* **GitHub:** [Arruda95](https://github.com/Arruda95)
+* **LinkedIn:** [Vitor Arruda](https://www.linkedin.com/in/vitor-arruda-b31909274/)
 
 ---
 
-© 2023 Blog Auth. Todos os direitos reservados.
+© 2025 Blog Auth. Todos os direitos reservados.
